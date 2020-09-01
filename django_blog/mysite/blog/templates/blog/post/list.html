@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}
   MyBlog
@@ -8,16 +9,38 @@
   <h1>My Blog</h1>
 
   {% for post in posts %}
+    {% if tag %}
+      <h2>Posts tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+
     <h2>
       <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
     </h2>
 
+    <p class="tags">
+      Tags:
+      {% for tag in post.tags.all %}
+        <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+          {{ tag.name }}
+        </a>
+        {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+
     <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
 
-    {{ post.body | truncatewords:30 | linebreaks }}
+    {{ post.body | markdown | truncatewords_html:30 }}
   {% endfor %}
 
   {% comment %} We use only if we use a functions view {% endcomment %}
   {% comment %} {% include "pagination.html" with page=posts %} {% endcomment %}
-  {% include "pagination.html" with page=page_obj %}
+
+  {% if tag %}
+    {% include "pagination.html" with page=posts %}
+  {% elif page_obj %}
+    {% include "pagination.html" with page=page_obj %}
+  {% endif %}
+
+  {% comment %} We use only if we use a class base view {% endcomment %}
+
 {% endblock %}
