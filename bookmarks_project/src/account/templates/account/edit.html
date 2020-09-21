@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Edit yout account
+{% endblock %}
+
+{% block content %}
+  <h1>Edit yout account</h1>
+  <p>You can edit yout account using the following form: </p>
+  <form action="." method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    <input type="submit" value="Save changes">
+  </form>
+{% endblock %}
