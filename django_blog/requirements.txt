@@ -8,7 +8,7 @@ pytz==2020.1
 six==1.15.0
 sqlparse==0.3.1
 virtualenv==20.0.28
-Django==2.2.13
+Django==3.2.25
 django-taggit==0.22.2
 Markdown==2.6.11
 psycopg2
